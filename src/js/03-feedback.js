@@ -11,9 +11,6 @@ const LOCALSTORAGE_KEY = 'feedback-form-state';
 
 const formData = {};
 
-const savedFormParams = localStorage.getItem(LOCALSTORAGE_KEY);
-const parsFormParams = JSON.parse(savedFormParams);
-
 populateForm();
 
 function onInput(evt) {
@@ -23,19 +20,21 @@ function onInput(evt) {
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-  // const savedParams = localStorage.getItem(LOCALSTORAGE_KEY);
-  // const parsParams = JSON.parse(savedParams);
+
+  const savedFormParams = localStorage.getItem(LOCALSTORAGE_KEY);
+  const parsFormParams = JSON.parse(savedFormParams);
+
   console.log(parsFormParams);
   evt.target.reset();
   localStorage.removeItem(LOCALSTORAGE_KEY);
 }
 
 function populateForm() {
-  // const savedParams = localStorage.getItem(LOCALSTORAGE_KEY);
-  // const parsParams = JSON.parse(savedParams);
+  const savedFormParams = localStorage.getItem(LOCALSTORAGE_KEY);
+  const parsFormParams = JSON.parse(savedFormParams);
+
   if (parsFormParams) {
-    input.value = parsParams.email;
-    textarea.value = parsParams.massage;
-    console.log(textarea.value);
+    input.value = parsFormParams.email;
+    textarea.value = parsFormParams.message;
   }
 }
