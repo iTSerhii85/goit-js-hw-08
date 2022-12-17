@@ -1,17 +1,35 @@
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 
 const form = document.querySelector('.feedback-form');
-// const submitButton = form.querySelector('button');
+const textarea = form.querySelector('textarea');
+const input = form.querySelector('input');
 
-form.addEventListener('input', debounce(onInput, 500));
-form.addEventListener('submit', onClick);
+const LOCALSTORAGE_KEY = 'feedback-form-state';
 
-function onInput(evt){
-    console.log(evt.target.value);
-};
+const formData = {};
 
-function onClick(evt) {
-    evt.preventDefault();
-    const {elements: {email, message}} = evt.target;
-    console.log(email.value, message.value);
+form.addEventListener('submit', onFormSubmit);
+form.addEventListener('input', debounce(onInput, 1000));
+
+populateForm();
+
+function onInput(evt) {
+  formData[evt.target.name] = evt.target.value;
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(formData));
+}
+
+function onFormSubmit(evt) {
+  evt.preventDefault();
+  console.log(formData);
+  evt.target.reset();
+  localStorage.removeItem(LOCALSTORAGE_KEY);
+}
+
+function populateForm() {
+  const savedParams = localStorage.getItem(LOCALSTORAGE_KEY);
+  const parsParams = JSON.parse(savedParams);
+  if (parsParams) {
+    input.value = parsParams.email;
+    textarea.value = parsParams.massage;
+  }
 }
